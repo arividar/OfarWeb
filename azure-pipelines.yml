@@ -14,3 +14,6 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- script: bash ls -lRa
+  displayName: 'listing directory'
