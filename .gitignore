@@ -1,3 +1,6 @@
 # build
 [Oo]bj/
 [Bb]in/
+
+# tools
+.vscode/
