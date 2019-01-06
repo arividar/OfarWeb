@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DotNetConsole
+namespace OfarWeb
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Hey there OfarWeb!");
         }
     }
 }
