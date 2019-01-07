@@ -22,10 +22,11 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
+  enabled: false
 
 - script: dotnet publish --output $(Build.ArtifactStagingDirectory)
   displayName: Stage build
-  enabled: false
+  enabled: true
 
 - task: PublishBuildArtifacts@1
   displayName: "Publish build"
