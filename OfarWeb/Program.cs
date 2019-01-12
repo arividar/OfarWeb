@@ -41,9 +41,9 @@ namespace OfarWeb
             }
 
             builder.UseKestrel((builderContext, options) =>
-            {
-                options.Configure(builderContext.Configuration.GetSection("Kestrel"));
-            })
+                {
+                    options.Configure(builderContext.Configuration.GetSection("Kestrel"));
+                })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var env = hostingContext.HostingEnvironment;
