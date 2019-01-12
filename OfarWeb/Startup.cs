@@ -10,7 +10,7 @@ namespace OfarWeb
         {
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello Ofarvefur!");
+                await context.Response.WriteAsync("Hallo ofurvefur!");
             });
         }
     }

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace OfarWeb
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Hey there OfarWeb!");
             IWebHost wh = WebHost.CreateDefaultBuilder<Startup>(args).Build();
