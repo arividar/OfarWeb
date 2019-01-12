@@ -6,12 +6,10 @@ namespace OfarWeb
 {
     class Program
     {
-        static void Main(string[] args) 
+        static void Main(string[] args)
         {
             Console.WriteLine("Hey there OfarWeb!");
-            IWebHostBuilder whb1 = WebHost.CreateDefaultBuilder(args);
-            IWebHostBuilder whb2 = whb1.UseStartup<Startup>();
-            IWebHost wh = whb2.Build();
+            IWebHost wh = WebHost.CreateDefaultBuilder<Startup>(args).Build();
             wh.Run();
         }
     }

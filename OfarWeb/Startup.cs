@@ -6,12 +6,12 @@ namespace OfarWeb
 {
     internal class Startup
     {
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello Ofar Web!");
-            });        
+                await context.Response.WriteAsync("Hello Ofarvefur!");
+            });
         }
     }
 }
