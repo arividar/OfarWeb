@@ -24,33 +24,21 @@ namespace OfarWeb
                     next(app);
                 };
             }
-        }   
+        }
 
-        public static void Main(string[] args)
+        public static void Main()
         {
-            Console.WriteLine("Hey there OfarWeb!");
             var builder = new WebHostBuilder();
 
-            if (string.IsNullOrEmpty(builder.GetSetting(WebHostDefaults.ContentRootKey)))
-            {
-                builder.UseContentRoot(Directory.GetCurrentDirectory());
-            }
-            if (args != null)
-            {
-                builder.UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build());
-            }
+            builder.UseContentRoot(Directory.GetCurrentDirectory());
 
-            builder.UseKestrel((builderContext, options) =>
-                {
-                    options.Configure(builderContext.Configuration.GetSection("Kestrel"));
-                })
-                .ConfigureAppConfiguration((hostingContext, config) =>
+            builder.UseKestrel((builderContext, options) => { options.Configure(builderContext.Configuration.GetSection("Kestrel")); });
+
+            builder.ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var env = hostingContext.HostingEnvironment;
-
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-
                     if (env.IsDevelopment())
                     {
                         var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
@@ -59,22 +47,18 @@ namespace OfarWeb
                             config.AddUserSecrets(appAssembly, optional: true);
                         }
                     }
-
                     config.AddEnvironmentVariables();
+                });
 
-                    if (args != null)
-                    {
-                        config.AddCommandLine(args);
-                    }
-                })
-                .ConfigureLogging((hostingContext, logging) =>
+            builder.ConfigureLogging((hostingContext, logging) =>
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
                     logging.AddDebug();
                     logging.AddEventSourceLogger();
-                })
-                .ConfigureServices((hostingContext, services) =>
+                });
+
+            builder.ConfigureServices((hostingContext, services) =>
                 {
                     // Fallback
                     services.PostConfigure<HostFilteringOptions>(options =>
@@ -87,20 +71,25 @@ namespace OfarWeb
                             options.AllowedHosts = (hosts?.Length > 0 ? hosts : new[] { "*" });
                         }
                     });
+
                     // Change notification
                     services.AddSingleton<IOptionsChangeTokenSource<HostFilteringOptions>>(
                         new ConfigurationChangeTokenSource<HostFilteringOptions>(hostingContext.Configuration));
 
                     services.AddTransient<IStartupFilter, HostFilteringStartupFilter>();
-                })
-                .UseIIS()
-                .UseIISIntegration()
-                .UseDefaultServiceProvider((context, options) =>
+                });
+
+            builder.UseIIS();
+
+            builder.UseIISIntegration();
+
+            builder.UseDefaultServiceProvider((context, options) =>
                 {
                     options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
                 });
 
             builder.UseStartup<Startup>();
+
             IWebHost wh = builder.Build();
             wh.Run();
         }
